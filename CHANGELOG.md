@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Only the linked person or an admin can now change the email addresses of a household member's
+  contact.** A contact linked to an account carries that account's email addresses, and those
+  addresses are used by the password reset and by the SSO sign-in to find the account. Any member
+  with write access to contacts could change them, on anyone's contact, and a CardDAV sync could
+  overwrite them as well. Changing the primary or an additional email address of a linked contact
+  now needs that person or an admin; anyone else is refused, and the edit form shows the addresses
+  read-only to them. The CardDAV sync no longer writes them on a linked contact. Every other field
+  of a linked contact stays editable for members as before, and contacts that are not linked to an
+  account are not affected.
+
 ## [2.68.0] - 2026-09-20
 
 ### Added
