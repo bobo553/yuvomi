@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   of a linked contact stays editable for members as before, and contacts that are not linked to an
   account are not affected.
 
+- **An API token limited to certain modules can no longer change the email addresses of a household
+  member's contact, not even an admin's token or the person's own.** These addresses lead to the
+  account, which is more than a module permission covers. Changing them now needs a signed-in session
+  or a token without module limits; other fields stay editable with a limited token.
+
 ## [2.68.0] - 2026-09-20
 
 ### Added
