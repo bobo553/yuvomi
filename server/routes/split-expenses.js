@@ -19,6 +19,7 @@ import { buildSplits, decorateMoney, minorToDecimal, parseMoneyToMinor, simplify
 import { CURRENCY_CODES } from '../../public/utils/currency-codes.js';
 import { syncBirthdayArtifacts } from '../services/birthdays.js';
 import { householdMemberSql, newNonMembers, staffMessage } from '../services/household-members.js';
+import { EMAIL_IN_USE_MESSAGE, emailsTakenByOtherAccounts } from '../services/contact-identity.js';
 import { todayKey } from '../utils/timezone.js';
 import { mayReadModule, mayWriteModule } from '../permissions.js';
 
@@ -193,14 +194,19 @@ function uniqueUsername(base) {
  * (etwa ein Gast ohne Mitgliedschaft) stehen.
  */
 class Refusal extends Error {
-  constructor(status, message) {
+  constructor(status, message, reason = null) {
     super(message);
     this.status = status;
+    this.reason = reason;
   }
 }
 
 function sendRefusal(res, err) {
-  return res.status(err.status).json({ error: err.message, code: err.status });
+  return res.status(err.status).json({
+    error: err.message,
+    code: err.status,
+    ...(err.reason && { reason: err.reason }),
+  });
 }
 
 /**
@@ -236,7 +242,7 @@ function randomGuestPasswordHash() {
  * Mitglieds-Kandidaten) und der angelegte Geburtstag ein Folgeeintrag des
  * Gastes (docs/DECISIONS.md Abschnitt 10) - beides fragt kein Kalenderrecht.
  */
-function userFromContact(database, contactId, actorId, groupId, passwordHash) {
+function userFromContact(database, contactId, actorId, groupId, passwordHash, { checkEmails = true } = {}) {
   const contact = database.prepare('SELECT * FROM contacts WHERE id = ?').get(contactId);
   if (!contact) throw new Refusal(404, 'Contact not found.');
   if (contact.family_user_id) return contact.family_user_id;
@@ -244,6 +250,16 @@ function userFromContact(database, contactId, actorId, groupId, passwordHash) {
   // Vorabfrage schon verknuepft war und es jetzt nicht mehr ist - ohne await
   // dazwischen unmoeglich, also ein Programmierfehler, kein Nutzerfehler.
   if (!passwordHash) throw new Error('userFromContact: contact lost its user without a yield.');
+  // Ab hier wird der Kontakt verknuepft, seine Adressen werden die eines Kontos.
+  // Traegt eine davon schon ein anderes Konto, legt ein Mitglied den Gast nicht
+  // an (GHSA-6pmj-w42g-g6qv); ein Admin darf es.
+  if (checkEmails) {
+    const secondary = database.prepare('SELECT value FROM contact_emails WHERE contact_id = ?')
+      .all(contact.id).map((r) => r.value);
+    if (emailsTakenByOtherAccounts(database, { after: [contact.email, ...secondary] }).length) {
+      throw new Refusal(409, EMAIL_IN_USE_MESSAGE, 'email_in_use');
+    }
+  }
   const created = database.prepare(`
     INSERT INTO users (username, display_name, password_hash, avatar_color, role, family_role)
     VALUES (?, ?, ?, ?, 'member', 'other')
@@ -839,7 +855,9 @@ router.post('/groups/:id/members', async (req, res) => {
       memberUserId = db.transaction(() => {
         assertManagesGroup(groupId, req);
         const uid = vContactId.value
-          ? userFromContact(db.get(), vContactId.value, userId(req), groupId, passwordHash)
+          ? userFromContact(db.get(), vContactId.value, userId(req), groupId, passwordHash, {
+            checkEmails: !isAdminRequest(req),
+          })
           : vUserId.value;
         const exists = db.get().prepare('SELECT 1 FROM users WHERE id = ?').get(uid);
         if (!exists) throw new Refusal(404, 'User not found.');
@@ -919,6 +937,12 @@ router.post('/groups/:id/guests', async (req, res) => {
         const username = requestedUsername ?? uniqueUsername(vDisplayName.value);
         const exists = db.get().prepare('SELECT 1 FROM users WHERE username = ?').get(username);
         if (exists) throw new Refusal(409, 'Username is already taken.');
+        // Die Adresse des Gastes steht an einem verknuepften Kontakt. Traegt sie
+        // schon ein anderes Konto, legt ein Mitglied den Gast nicht an
+        // (GHSA-6pmj-w42g-g6qv); ein Admin darf es.
+        if (!isAdminRequest(req) && emailsTakenByOtherAccounts(db.get(), { after: [vEmail.value] }).length) {
+          throw new Refusal(409, EMAIL_IN_USE_MESSAGE, 'email_in_use');
+        }
         const created = db.get().prepare(`
           INSERT INTO users (username, display_name, password_hash, avatar_color, role, family_role)
           VALUES (?, ?, ?, ?, 'member', ?)
