@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Only admins can manage CardDAV accounts now, as the settings page already promised.** The
+  contact sync page was shown to admins only, but the server checked nothing beyond access to the
+  contacts module, which members have by default. Any member, and any API token with
+  `contacts:write`, could list the household's CardDAV accounts with their server address and
+  username, add or remove accounts, switch address books on and off, and change an account's server
+  address while its stored password was kept, so that the next connection test or sync sent the
+  household's CardDAV credentials to that server. Every route under `/api/v1/contacts/cardav` now
+  requires an admin; members get `403`. An API token needs an admin as its subject and, as before,
+  the `contacts` scope. Members keep reading and editing contacts as before, and the background sync
+  keeps running.
+
+- **A CardDAV account moved to another server or username needs its password again.** Leaving the
+  password empty when editing an account still keeps the stored one, but only while the server
+  (scheme, host and port) and the username stay the same. Otherwise the change is refused with
+  `400` and the error code `password_required`, and nothing is saved. A different path on the same
+  server keeps working without the password.
+
 ## [2.69.0] - 2026-09-23
 
 ### Added
