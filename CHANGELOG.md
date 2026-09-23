@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.68.1] - 2026-09-23
+
 ### Security
 
 - **Only the linked person or an admin can now change the email addresses of a household member's
