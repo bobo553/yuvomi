@@ -1,10 +1,14 @@
-<!-- version: 2.68.1 -->
-This is a security release, and it changes nothing about how Yuvomi looks or works day to day. It closes a way for a household member to take over another member's account, including an admin's, through the email addresses stored on that person's contact.
+<!-- version: 2.69.0 -->
+This release brings a nutrition log to Health, keeps you signed in for longer, and makes restoring a backup safer. It also closes several places where a household member could see or change data that their module rights did not allow, so updating is recommended.
 
-The email addresses of a contact that belongs to a household member can now only be changed by that person or by an admin, and not through an API token that is limited to certain modules. Adding a contact to a shared-expense group now makes that person a guest of the group instead of a full household member.
+Health has a new Nutrition tab: a daily target per person and a log of what was eaten, with an optional dashboard tile. The dashboard can also show a fasting timer. Inventory items can have recurring dates, a service history and, for vehicles, an odometer. Rewards can say how many of them the household has, a recipe ingredient can be linked to the pantry row it means, and a payment recorded in shared expenses can now be reversed.
 
-One thing to check after updating: accounts that were created from a contact in shared expenses before this update stay as they are, because some of them may be in real use. Look through the household members under Settings for people who were only meant to share expenses, and remove them or add them again as guests. Turning on two-factor sign-in for admins is a good idea either way.
+You now stay signed in as long as you open Yuvomi at least once every 90 days, and you can sign out your other devices from your account settings. Existing sign-ins move to the new rule on their next visit.
 
-Nothing changes in the database with this update, so it is a plain container swap with no migration to wait for.
+A restore now swaps the database in as a whole and checks every page of the backup first, so an interrupted restore no longer leaves a broken database behind and a damaged backup is refused. A backup from another installation can be restored from the settings page by entering its key.
 
-Full release notes are available at https://github.com/ulsklyc/yuvomi/releases/tag/v2.68.1
+Documents attached to calendar events, receipts on budget entries and inventory items, pantry and shopping transfers and shared-expense member lists now all follow the documents and module rights of the person looking. Many smaller fixes cover read-only members, reminders on synced appointments, calendar colours and accessibility.
+
+The database is updated automatically on the first start after the update. It adds a few tables and columns and can rebuild shared-expense bookings that an earlier account deletion removed, so the first start may take a little longer than usual. Taking a backup before updating is a good idea.
+
+Full release notes are available at https://github.com/ulsklyc/yuvomi/releases/tag/v2.69.0

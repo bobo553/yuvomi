@@ -81,12 +81,12 @@ Turn on what your household needs; the rest stays out of the way.
 | **Pantry** | Amounts, storage locations and best-before dates, with a reminder before something expires. |
 | **Calendar** | Two-way Google and CalDAV sync, Outlook push, subscriptions, holidays and per-event visibility. |
 | **Documents** | Tagged, searchable family files in folders, stored locally, on WebDAV or in Google Drive. |
-| **Inventory** | What you own, with purchase price, warranty, linked receipts and deadline reminders. Off by default. |
+| **Inventory** | What you own, with purchase price, warranty, linked receipts, a service log and recurring deadline reminders. Off by default. |
 | **Budget** | Income, expenses, accounts, loans, subscriptions and shared expenses with debt simplification. |
 | **Housekeeping** | Household staff: schedules, check-in/out, billing, chores and supply requests. |
 | **Waste collection** | Pickup schedules per waste type, even "the last Friday", or a subscribed municipal ICS calendar. Off by default. |
 | **Rewards** | Points from tasks, a parent-approved catalog and an auditable ledger. |
-| **Health** | Per-member vitals, medications, preventive care, labs, activity, cycle tracking and a fasting journal, with trend charts. |
+| **Health** | Per-member vitals, medications, preventive care, labs, activity, cycle tracking, a fasting journal and a nutrition log, with trend charts. |
 | **Schedule** | Rotating shifts and fixed weekly timetables, shown as an overlay in the calendar. Off by default. |
 | **Notes &amp; Contacts** | Markdown sticky notes with tappable checklists, plus contacts with CardDAV sync and vCard import/export. |
 | **Birthdays** | Birthdays and optional name days, with calendar entries, ages and reminders. |

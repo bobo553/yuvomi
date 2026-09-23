@@ -81,12 +81,12 @@ Schalte an, was dein Haushalt braucht; der Rest bleibt aus dem Weg.
 | **Vorrat** | Menge, Lagerort und Mindesthaltbarkeit, mit einer Erinnerung, bevor etwas abläuft. |
 | **Kalender** | Zwei-Wege-Sync mit Google und CalDAV, Outlook-Push, Kalender-Abos, Feiertage und Sichtbarkeit je Termin. |
 | **Dokumente** | Getaggte, durchsuchbare Familiendateien in Ordnern, lokal, auf WebDAV oder in Google Drive. |
-| **Inventar** | Was dir gehört, mit Kaufpreis, Garantie, verknüpften Belegen und Erinnerungen vor Fristablauf. Standardmäßig aus. |
+| **Inventar** | Was dir gehört, mit Kaufpreis, Garantie, verknüpften Belegen, einem Wartungsprotokoll und wiederkehrenden Erinnerungen vor Fristablauf. Standardmäßig aus. |
 | **Budget** | Einnahmen, Ausgaben, Konten, Darlehen, Abos und gemeinsame Ausgaben mit Schuldenvereinfachung. |
 | **Hauswirtschaft** | Haushaltshilfen: Dienstpläne, Ein- und Ausstempeln, Abrechnung, Aufgaben und Materialwünsche. |
 | **Entsorgung** | Abholtermine je Abfallart, auch „der letzte Freitag", oder ein abonnierter kommunaler ICS-Kalender. Standardmäßig aus. |
 | **Belohnungen** | Punkte aus Aufgaben, ein elterlich freigegebener Katalog und ein nachvollziehbares Konto. |
-| **Gesundheit** | Vitalwerte, Medikamente, Vorsorge, Laborwerte, Aktivität, Zyklus und ein Fastentagebuch je Mitglied, mit Verlaufsdiagrammen. |
+| **Gesundheit** | Vitalwerte, Medikamente, Vorsorge, Laborwerte, Aktivität, Zyklus, ein Fastentagebuch und ein Ernährungstagebuch je Mitglied, mit Verlaufsdiagrammen. |
 | **Schichtplan** | Rotierende Schichten und feste Wochenpläne, als Ebene im Kalender eingeblendet. Standardmäßig aus. |
 | **Notizen &amp; Kontakte** | Markdown-Haftnotizen mit antippbaren Checklisten, dazu Kontakte mit CardDAV-Sync und vCard-Import/-Export. |
 | **Geburtstage** | Geburtstage und optionale Namenstage, mit Kalendereinträgen, Alter und Erinnerungen. |
